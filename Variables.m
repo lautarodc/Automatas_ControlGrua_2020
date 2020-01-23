@@ -14,7 +14,7 @@ Rd=0.75;    %m
 Jd=8;       %kg.m^2
 Jmi=30;     %kg.m^2
 beq2=18;    %Nm/(rad/s)---bd+bmi*(ri^2)
-bmi=9;      %A definir
+bmi=0.01;      %A definir
 bd=9;       %A definir
 Jeq2=Jd+Jmi*(riz^2);
 %% Variables péndulo
