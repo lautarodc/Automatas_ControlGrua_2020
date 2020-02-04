@@ -8,6 +8,7 @@ beq1=30;    %Nm/(rad/s)---bwc+bmc*(rc^2)
 bmc=15;      %A definir
 bwc=15;      %A definir
 Jeq1=Jwc+Jmc*(rc^2);
+Mt=Mc+Jeq1*(1/(Rw^2));
 %% Variables Izaje
 riz=30;
 Rd=0.75;    %m
