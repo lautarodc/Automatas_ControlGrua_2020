@@ -98,3 +98,40 @@ for i=1:5
 end
 
 stairs(x,y,'r')
+xnuevo=x;
+ynuevo=y;
+
+for i=71:5:length(x)
+    if i==71
+        if ((y(i-1)-y(i))>2.5 || (y(i+5)-y(i))>2.5)
+            aux=max(y(i-1),y(i+5));
+            for j=0:4
+                ynuevo(i+j)=aux;
+            end
+        end
+        
+    else
+        
+        if i~=length(x) && (y(i-5)-y(i)>2.5 || y(i+5)-y(i)>2.5)
+            aux=max(y(i-5),y(i+5));
+            for j=0:4
+                ynuevo(i+j)=aux;
+            end
+        else
+            if i~=length(x)
+                for j=0:4
+                    ynuevo(i+j)=y(i);
+                end
+            else
+                ynuevo(i)=y(i);
+            end
+        end
+    end
+end
+for i=71:length(xnuevo)
+    ynuevo(i)=ynuevo(i)+2.5;
+end
+% ynuevo=spline(x,ynuevo,x);
+stairs(x,ynuevo,'b')
+
+% plot(x,ynuevo,'b')
