@@ -2,9 +2,9 @@ L-Separar de StateFlow lo que es de automata y lo que no es de automata OK
 S-Arreglar la superficie de contacto al cambiar la envolvente OK
 L-Envolvente de paso manual/automatico OK
 L-Armar graficador en Matlab/Graficar despues de cortar simulacion
-S-Activar modo manual a automatico y bis al entrar en contacto con la envolvente de seguridad
+S-Activar modo manual a automatico y bis al entrar en contacto con la envolvente de seguridad OK
 D-Seleccion de consigna contenedor
-L-Contenedor en un mismo lugar en muelle
+L-Contenedor en un mismo lugar en muelle OK
 D-Realizar hiperbola de potencia constante para Carro e Izaje OK
 L-Realizar trayectoria trapezoidal
 S-Realizar automata que calcula la velocidad maxima en X e Y para realizar la trayectoria deseada

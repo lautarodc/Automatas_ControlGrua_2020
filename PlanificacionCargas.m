@@ -25,7 +25,8 @@ capacidad_Total=capacidad_lateral*capacidad_vertical;
 ocupacion=floor(0.5*capacidad_Total);
 %Creacion de contenedor en muelle
 % [cont_x,cont_y]=contenedor(lim_xi+(lim_xd-lim_xi)*rand(),1.25,l_cont);
-cont_muelle_x=-30+0.5*randi(50)+l_cont/2;
+xo=-10;
+cont_muelle_x=xo+l_cont/2;
 [cont_x,cont_y]=contenedor(cont_muelle_x,1.25,l_cont);
 cont_muelle_x=(30+(cont_muelle_x-1.25))/0.5;
 cont_muelle_y=l_cont;
@@ -135,3 +136,41 @@ end
 stairs(x,ynuevo,'b')
 
 % plot(x,ynuevo,'b')
+%% Generador de trayectoria
+columna_consigna=4; %Columna de consigna a elegir
+xc=5+2.5*columna_consigna;
+index_columna=((30+xc)/0.5)+1;
+index_contenedor=((30+xo)/0.5)+1;
+h_max=max(ynuevo(index_contenedor:index_columna));
+i=1;
+while(ynuevo(i)~=h_max)
+    i=i+1;
+end
+x_max=x(i);
+vel_max_izaje=2;
+vel_max_carro=4;
+x_velmax=8;
+distx_total=x_max-xo+1.25;
+dif_x=distx_total-x_velmax;
+temp_total=4+dif_x/vel_max_carro;
+aux_y=temp_total*vel_max_izaje;
+subir_y=h_max-aux_y;
+temp_y=sqrt(2*subir_y/1);
+temp_total=temp_total+temp_y;
+plot([(xo+1.25) (xo+1.25)],[0 subir_y],'g');
+x_recta=linspace(xo+1.25,x_max,10);
+for i=1:length(x_recta)
+   y_recta(i)=subir_y+((h_max-subir_y)/(x_max-(xo+1.25)))*(x_recta(i)-(xo+1.25)); 
+end
+plot(x_recta,y_recta,'g');
+
+
+
+
+
+
+
+
+
+
+
