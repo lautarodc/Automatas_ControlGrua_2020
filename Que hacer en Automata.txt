@@ -1,6 +1,6 @@
-L-Separar de StateFlow lo que es de automata y lo que no es de automata
-S-Arreglar la superficie de contacto al cambiar la envolvente
-L-Envolvente de seguridad
+L-Separar de StateFlow lo que es de automata y lo que no es de automata OK
+S-Arreglar la superficie de contacto al cambiar la envolvente OK
+L-Envolvente de paso manual/automatico OK
 L-Armar graficador en Matlab/Graficar despues de cortar simulacion
 S-Activar modo manual a automatico y bis al entrar en contacto con la envolvente de seguridad
 D-Seleccion de consigna contenedor
