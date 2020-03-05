@@ -3,10 +3,13 @@ S-Arreglar la superficie de contacto al cambiar la envolvente
 L-Envolvente de seguridad
 L-Armar graficador en Matlab/Graficar despues de cortar simulacion
 S-Activar modo manual a automatico y bis al entrar en contacto con la envolvente de seguridad
-D-Realizar hiperbola de potencia contante para Carro e Izaje
+D-Seleccion de consigna contenedor
+L-Contenedor en un mismo lugar en muelle
+D-Realizar hiperbola de potencia constante para Carro e Izaje OK
 L-Realizar trayectoria trapezoidal
 S-Realizar automata que calcula la velocidad maxima en X e Y para realizar la trayectoria deseada
 D-Ingenieria inversa en trayectoria para ver que angulos toma la carga a velocidad maxima
 D-Aplicar la mejor estrategia para tener un angulo optimo
 D-Hacer Codesys, No integrarlo con Simulink
+-Gerarquizacion de Nivel 0
 D-HACER INFORME
