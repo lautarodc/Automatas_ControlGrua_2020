@@ -185,23 +185,23 @@ plot(x_t,y_t,'r')
 
 %% Prueba de armado de grafica en UI en funcion de la envolvente de contacto
 
-figure(2)
-hold on
-axis([-30 60 -30 50],'equal');
-ind_muelle=((30+0)/0.5)+1;
-ind_barco=((30+5)/0.5)+1;
-% stairs(x(ind_barco:length(x)),y(ind_barco:length(x)),'m');
-for i=ind_barco:5:length(x)-1
-    cant_col=(y(i)-(-20))/2.5;
-    if cant_col~=0
-        for j=1:cant_col
-            [cont_x,cont_y]=contenedor(x(i)+1.25,-20+2.5*(j-1)+1.25,2.5);
-            plot(cont_x,cont_y,'m-')
-        end
-    end
-end
-plot(base_x,base_y,'k-',barco_x,barco_y,'g-',mar_x1,mar_y1,'b-',mar_x2,mar_y2,'b-',carro_x,carro_y,'k-');
-stairs(x(1:ind_muelle),y(1:ind_muelle),'k-')
+% figure(2)
+% hold on
+% axis([-30 60 -30 50],'equal');
+% ind_muelle=((30+0)/0.5)+1;
+% ind_barco=((30+5)/0.5)+1;
+% % stairs(x(ind_barco:length(x)),y(ind_barco:length(x)),'m');
+% for i=ind_barco:5:length(x)-1
+%     cant_col=(y(i)-(-20))/2.5;
+%     if cant_col~=0
+%         for j=1:cant_col
+%             [cont_x,cont_y]=contenedor(x(i)+1.25,-20+2.5*(j-1)+1.25,2.5);
+%             plot(cont_x,cont_y,'m-')
+%         end
+%     end
+% end
+% plot(base_x,base_y,'k-',barco_x,barco_y,'g-',mar_x1,mar_y1,'b-',mar_x2,mar_y2,'b-',carro_x,carro_y,'k-');
+% stairs(x(1:ind_muelle),y(1:ind_muelle),'k-')
 
 
 
