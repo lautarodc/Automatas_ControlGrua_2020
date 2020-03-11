@@ -8,6 +8,15 @@ L-Contenedor en un mismo lugar en muelle OK
 D-Realizar hiperbola de potencia constante para Carro e Izaje OK
 D-Realizar ciclos de operacion
 L-Realizar trayectoria trapezoidal verificando jerk
+    - Transición suave entre modo manual y automático
+    - Rate Limiter para la velocidad manual
+    - Aceleración variable izaje y carro
+    *Se calculó el primer tramo de trayectoria para carro
+    *Se calculó el tramo de desaceleración para el primer tramo izaje
+    *Resta calcular el tramo de aceleración para el primer tramo de izaje
+    *Calcular en base al tiempo de carro cuanto es el izaje inicial
+    *Calcular la desaceleración del carro
+    *Calcular el tramo de izaje en el barco
 S-Realizar automata que calcula la velocidad maxima en X e Y para realizar la trayectoria deseada OK
 D-Ingenieria inversa en trayectoria para ver que angulos toma la carga a velocidad maxima
 D-Aplicar la mejor estrategia para tener un angulo optimo
