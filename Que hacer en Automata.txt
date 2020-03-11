@@ -6,10 +6,11 @@ S-Activar modo manual a automatico y bis al entrar en contacto con la envolvente
 D-Seleccion de consigna contenedor OK
 L-Contenedor en un mismo lugar en muelle OK
 D-Realizar hiperbola de potencia constante para Carro e Izaje OK
-L-Realizar trayectoria trapezoidal
+D-Realizar ciclos de operacion
+L-Realizar trayectoria trapezoidal verificando jerk
 S-Realizar automata que calcula la velocidad maxima en X e Y para realizar la trayectoria deseada
 D-Ingenieria inversa en trayectoria para ver que angulos toma la carga a velocidad maxima
 D-Aplicar la mejor estrategia para tener un angulo optimo
 D-Hacer Codesys, No integrarlo con Simulink
-L-Gerarquizacion de Nivel 0
+L-Gerarquizacion de Nivel 0 (A MEDIAS)
 D-HACER INFORME
