@@ -157,6 +157,8 @@ v_inicial_izaje=0.1;
 v_inicial_carro=0;
 a_inicial_carro=0;
 a_inicial_izaje=0;
+%% Calculo de x del carro hasta su velocidad maxima
+
 % Calculo de tiempo, desplazamiento y velocidad para alcanzar la
 % aceleración máxima del carro
 t0_carro=a_max_carro/jerk_carro;
@@ -165,45 +167,20 @@ v0_carro=v_inicial_carro+jerk_carro*0.5*(t0_carro^2);
 p0_carro=v_inicial_carro*t0_carro+a_inicial_carro*0.5*(t0_carro^2)+jerk_carro*(1/6)*(t0_carro^3);
 % Calculo de tiempo y desplazamiento para alcanzar la velocidad máxima del
 % carro: jerk_carro=0;
+jerk_carro=-1;
 t1_carro=(vel_max_carro-v0_carro)/a0_carro;
-v1_carro=vel_max_carro;
+v1_carro=vel_max_carro-(jerk_carro*0.5*(((0-a0_carro)/jerk_carro)^2)+a0_carro*((0-a0_carro)/jerk_carro));
 p1_carro=p0_carro+v0_carro*t1_carro+a0_carro*0.5*(t1_carro^2);
+% Calculo de desaceleracion a aceleracion 0 para velocidad maxima del carro
+a2_carro=0;
+t2_carro=(a2_carro-a0_carro)/jerk_carro;
+v2_carro=v1_carro+jerk_carro*0.5*(t2_carro^2)+a0_carro*t2_carro;
+p2_carro=p1_carro+v1_carro*t2_carro+a0_carro*0.5*(t2_carro^2)+jerk_carro*(1/6)*(t2_carro^3);
+
 distx_total=x_max-xo-1.25;
-dif_x=distx_total-p1_carro;
-t_dif_x=dif_x/v1_carro;
-t_total_x=t0_carro+t1_carro+t_dif_x;
-
-%Desaceleracion Izaje
-v0_dacc_izaje=vel_max_izaje;
-jerk_izaje=-1;
-a0_dacc_izaje=0;
-a_dacc_izaje=-1;
-t0_dacc_izaje=(a_dacc_izaje-a0_dacc_izaje)/jerk_izaje;
-v0_izaje=0.5*jerk_izaje*(t0_dacc_izaje^2)+v0_dacc_izaje;
-x0_dacc_izaje=(1/6)*jerk_izaje*(t0_dacc_izaje^3)+v0_dacc_izaje*t0_dacc_izaje;
-vizaje_aux=0.5; %se debe calcular en funcion del jerk
-
-t1_dacc_izaje=(vizaje_aux-v0_izaje)/a_dacc_izaje;
-v1_dacc_izaje=vizaje_aux;
-x1_dacc_izaje=a_dacc_izaje*0.5*(t1_dacc_izaje^2)+v0_izaje*t1_dacc_izaje;
-
-jerk_izaje=1;
-a2_dacc_izaje=0;
-t2_dacc_izaje=(a2_dacc_izaje-a_dacc_izaje)/jerk_izaje;
-v2_dacc_izaje=0.5*jerk_izaje*(t2_dacc_izaje^2)+a_dacc_izaje*t2_dacc_izaje+v1_dacc_izaje;
-x2_dacc_izaje=(1/6)*jerk_izaje*(t2_dacc_izaje^3)+a_dacc_izaje*0.5*(t2_dacc_izaje^2)+v1_dacc_izaje*t2_dacc_izaje;
-
-
-% 
-% x_velmax=8;
-% distx_total=x_max-xo-1.25;
-% dif_x=distx_total-x_velmax;
-% temp_total=4+dif_x/vel_max_carro;
-% aux_y=temp_total*vel_max_izaje;
-% subir_y=h_max-aux_y;
-% temp_y=sqrt(2*subir_y/1);
-% temp_total=temp_total+temp_y;
-% t=linspace(0,temp_total,100);
+dif_x=distx_total-p2_carro;
+t_vmax_carro_total=t0_carro+t1_carro+t2_carro;
+t_vmax_carro=linspace(0,t_vmax_carro_total,100);
 % for i=1:length(t)
 %     if t(i)<temp_y
 %         x_t(i)=xo+1.25;
@@ -218,6 +195,72 @@ x2_dacc_izaje=(1/6)*jerk_izaje*(t2_dacc_izaje^3)+a_dacc_izaje*0.5*(t2_dacc_izaje
 %         y_t(i)=subir_y+vel_max_izaje*(t(i)-temp_y);
 %     end
 % end
+
+if dif_x<0
+    
+elseif dif_x>0
+
+end
+% Calculo de tiempo para el tramo a velocidad máxima del carro hasta llegar
+% a la altura máxima. 
+t_dif_x=dif_x/v2_carro;
+t_total_x=t0_carro+t1_carro+t_dif_x;
+
+%% Aceleracion Izaje a velocidad máxima
+v0_izaje=0.1; %Depende de la velocidad manual final del operador
+a0_acc_izaje=0; %Se debe contemplar una aceleración inicial para el movimiento manual pero luego dejarlo a aceleración 0;
+y0_izaje=2.5; %Donde se cambia la envolvente a automático;
+jerk_izaje=1;
+a_acc_izaje=1;
+%Tramo aceleración con jerk finito y aceleracion variable
+t0_acc_izaje=(a_acc_izaje-a0_acc_izaje)/jerk_izaje;
+v0_acc_izaje=0.5*jerk_izaje*(t0_acc_izaje^2)+a0_acc_izaje*t0_acc_izaje+v0_izaje;
+y0_acc_izaje=(1/6)*jerk_izaje*(t0_acc_izaje^3)+a0_acc_izaje*(t0_acc_izaje^2)+v0_izaje*t0_acc_izaje+y0_izaje;
+v_aux=v0_acc_izaje-v0_izaje;
+%Tramo aceleracion constante hasta velocidad de desaceleración
+v1_acc_izaje=vel_max_izaje-v_aux;
+t1_acc_izaje=(v1_acc_izaje-v0_acc_izaje)/a_acc_izaje;
+y1_acc_izaje=0.5*a_acc_izaje*(t1_acc_izaje^2)+v0_acc_izaje*t1_acc_izaje+y0_acc_izaje;
+%Tramo de desaceleración y velocidad a velocidad máxima
+jerk_izaje=-1;
+a2_acc_izaje=0;
+t2_acc_izaje=(a2_acc_izaje-a_acc_izaje)/jerk_izaje;
+v2_acc_izaje=0.5*jerk_izaje*(t2_acc_izaje^2)+a_acc_izaje*t2_acc_izaje+v1_acc_izaje;
+y2_acc_izaje=(1/6)*jerk_izaje*(t2_acc_izaje^3)+a_acc_izaje*(t2_acc_izaje^2)+v1_acc_izaje*t2_acc_izaje+y1_acc_izaje;
+disp('Velocidad luego de aceleracion y desaceleracion: ');
+disp(v2_acc_izaje);
+%% Desaceleracion Izaje a velocidad máxima
+v0_dacc_izaje=vel_max_izaje;
+jerk_izaje=-1;
+a0_dacc_izaje=0;
+a_dacc_izaje=-1;
+t0_dacc_izaje=(a_dacc_izaje-a0_dacc_izaje)/jerk_izaje;
+v0_izaje=0.5*jerk_izaje*(t0_dacc_izaje^2)+v0_dacc_izaje;
+y0_dacc_izaje=(1/6)*jerk_izaje*(t0_dacc_izaje^3)+v0_dacc_izaje*t0_dacc_izaje;
+ 
+jerk_izaje=1;
+vizaje_aux=-(0.5*jerk_izaje*(((0-a_dacc_izaje)/(jerk_izaje))^2)+a_dacc_izaje*((0-a_dacc_izaje)/(jerk_izaje))); %se debe calcular en funcion del jerk
+t1_dacc_izaje=(vizaje_aux-v0_izaje)/a_dacc_izaje;
+v1_dacc_izaje=vizaje_aux;
+y1_dacc_izaje=a_dacc_izaje*0.5*(t1_dacc_izaje^2)+v0_izaje*t1_dacc_izaje;
+
+jerk_izaje=1;
+a2_dacc_izaje=0;
+t2_dacc_izaje=(a2_dacc_izaje-a_dacc_izaje)/jerk_izaje;
+v2_dacc_izaje=0.5*jerk_izaje*(t2_dacc_izaje^2)+a_dacc_izaje*t2_dacc_izaje+v1_dacc_izaje;
+y2_dacc_izaje=(1/6)*jerk_izaje*(t2_dacc_izaje^3)+a_dacc_izaje*0.5*(t2_dacc_izaje^2)+v1_dacc_izaje*t2_dacc_izaje;
+disp(v2_dacc_izaje);
+
+% 
+% x_velmax=8;
+% distx_total=x_max-xo-1.25;
+% dif_x=distx_total-x_velmax;
+% temp_total=4+dif_x/vel_max_carro;
+% aux_y=temp_total*vel_max_izaje;
+% subir_y=h_max-aux_y;
+% temp_y=sqrt(2*subir_y/1);
+% temp_total=temp_total+temp_y;
+
 % 
 % 
 % plot([(xo+1.25) (xo+1.25)],[0 subir_y],'g');
