@@ -152,7 +152,7 @@ vel_max_carro=4;
 a_max_izaje=1;
 a_max_carro=1;
 jerk_izaje=1;
-jerk_carro=2;
+jerk_carro=1;
 v_inicial_izaje=0.1;
 v_inicial_carro=0;
 a_inicial_carro=0;
@@ -168,8 +168,8 @@ p0_carro=v_inicial_carro*t0_carro+a_inicial_carro*0.5*(t0_carro^2)+jerk_carro*(1
 % Calculo de tiempo y desplazamiento para alcanzar la velocidad máxima del
 % carro: jerk_carro=0;
 jerk_carro=-1;
-t1_carro=(vel_max_carro-v0_carro)/a0_carro;
 v1_carro=vel_max_carro-(jerk_carro*0.5*(((0-a0_carro)/jerk_carro)^2)+a0_carro*((0-a0_carro)/jerk_carro));
+t1_carro=(v1_carro-v0_carro)/a0_carro;
 p1_carro=p0_carro+v0_carro*t1_carro+a0_carro*0.5*(t1_carro^2);
 % Calculo de desaceleracion a aceleracion 0 para velocidad maxima del carro
 a2_carro=0;
@@ -177,34 +177,30 @@ t2_carro=(a2_carro-a0_carro)/jerk_carro;
 v2_carro=v1_carro+jerk_carro*0.5*(t2_carro^2)+a0_carro*t2_carro;
 p2_carro=p1_carro+v1_carro*t2_carro+a0_carro*0.5*(t2_carro^2)+jerk_carro*(1/6)*(t2_carro^3);
 
-distx_total=x_max-xo-1.25;
-dif_x=distx_total-p2_carro;
-t_vmax_carro_total=t0_carro+t1_carro+t2_carro;
-t_vmax_carro=linspace(0,t_vmax_carro_total,100);
-% for i=1:length(t)
-%     if t(i)<temp_y
-%         x_t(i)=xo+1.25;
-%         y_t(i)=0.5*1*(t(i)*t(i));
-%         
-%     else
-%         if t(i)<(temp_y+4)
-%             x_t(i)=xo+1.25+0.5*1*(t(i)-temp_y)*(t(i)-temp_y);
-%         else
-%             x_t(i)=xo+1.25+x_velmax+vel_max_carro*(t(i)-temp_y-4);
-%         end
-%         y_t(i)=subir_y+vel_max_izaje*(t(i)-temp_y);
-%     end
-% end
+% Perfil de posicion, velocidad y aceleracion del carro hasta el obstáculo máximo. 
+t=0:0.1:15;
+x=linspace(0,0,151);
+v=linspace(0,0,151);
+a=linspace(0,0,151);
+index=0;
+jerk_accel_carro=1;
+jerk_daccel_carro=-1;
+[x,v,a,index]=jerk_constante(x,v,a,xo,0,0,jerk_accel_carro,x_max,vel_max_carro,a_max_carro,t,index);
+[delta_v,delta_x,delta_t]=delta_velocidad(a(index),0,jerk_daccel_carro,1,0);
+[x,v,a,index]=aceleracion_constante(x,v,a,x(index),v(index),a(index),0,x_max,vel_max_carro-delta_v,a_max_carro,t,index-1);
+[x,v,a,index]=jerk_constante(x,v,a,x(index),v(index),a(index),jerk_daccel_carro,x_max,vel_max_carro,0,t,index-1);
+[x,v,a,index]=velocidad_constante(x,v,a,x(index),v(index),a(index),0,x_max,vel_max_carro,0,t,index-1);
+% --->Contemplar caso en el que x excede el objetivo final
+index_xmax=find(x>=x_max);
+tiempo_total_x=t(index_xmax(1));
 
-if dif_x<0
-    
-elseif dif_x>0
+figure(3)
+plot(t(1:index),x(1:index),'-r')
+figure(4)
+plot(t(1:index),v(1:index),'-b')
+figure(5)
+plot(t(1:index),a(1:index),'-g')
 
-end
-% Calculo de tiempo para el tramo a velocidad máxima del carro hasta llegar
-% a la altura máxima. 
-t_dif_x=dif_x/v2_carro;
-t_total_x=t0_carro+t1_carro+t_dif_x;
 
 %% Aceleracion Izaje a velocidad máxima
 v0_izaje=0.1; %Depende de la velocidad manual final del operador
@@ -251,6 +247,31 @@ v2_dacc_izaje=0.5*jerk_izaje*(t2_dacc_izaje^2)+a_dacc_izaje*t2_dacc_izaje+v1_dac
 y2_dacc_izaje=(1/6)*jerk_izaje*(t2_dacc_izaje^3)+a_dacc_izaje*0.5*(t2_dacc_izaje^2)+v1_dacc_izaje*t2_dacc_izaje;
 disp(v2_dacc_izaje);
 
+%% Perfil de posicion, velocidad y aceleracion de izaje hasta el obstáculo máximo. 
+
+y=linspace(0,0,151);
+vy=linspace(0,0,151);
+ay=linspace(0,0,151);
+index=0;
+
+v0_izaje=0.1; %Depende de la velocidad manual final del operador
+y0_izaje=2.5; %Donde se cambia la envolvente a automático;
+
+jerk_accel_izaje=1;
+jerk_daccel_izaje=-1;
+
+% Aceleracion hasta velocidad maxima 
+[y,vy,ay,index]=jerk_constante(y,vy,ay,y0_izaje,v0_izaje,0,jerk_accel_izaje,h_max,vel_max_izaje,a_max_izaje,t,index);
+[delta_v,delta_y,delta_t]=delta_velocidad(ay(index),0,jerk_daccel_izaje,1,0);
+[y,vy,ay,index]=aceleracion_constante(y,vy,ay,y(index),vy(index),ay(index),0,h_max,vel_max_izaje-delta_v,a_max_izaje,t,index-1);
+[y,vy,ay,index]=jerk_constante(y,vy,ay,y(index),vy(index),ay(index),jerk_daccel_izaje,h_max,vel_max_izaje,0,t,index-1);
+
+%Calculo de deltas para la desaceleracion desde velocidad maxima
+[delta_v,delta_y,delta_t]=deaccel_izaje(vel_max_izaje,a_max_izaje,jerk_accel_izaje,jerk_daccel_izaje);
+
+t_disp=tiempo_total_x-t(index)-delta_t;
+
+y_disp=h_max-y(index)-delta_y;
 % 
 % x_velmax=8;
 % distx_total=x_max-xo-1.25;
@@ -261,14 +282,5 @@ disp(v2_dacc_izaje);
 % temp_y=sqrt(2*subir_y/1);
 % temp_total=temp_total+temp_y;
 
-% 
-% 
-% plot([(xo+1.25) (xo+1.25)],[0 subir_y],'g');
-% x_recta=linspace(xo+1.25,x_max,10);
-% for i=1:length(x_recta)
-%     y_recta(i)=subir_y+((h_max-subir_y)/(x_max-(xo+1.25)))*(x_recta(i)-(xo+1.25));
-% end
 % plot(x_recta,y_recta,'g');
 % plot(x_t,y_t,'r')
-% 
-% 

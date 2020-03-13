@@ -6,15 +6,27 @@ x_out=x_in;
 v_out=v_in;
 a_out=a_in;
 
-
-while 1
-    a_out(1,i)=j*t(1,i-index_in)+a0;
-    v_out(1,i)=j*(t(1,i-index_in)^2)*0.5+a0*t(1,i-index_in)+v0;
-    x_out(1,i)=j*(t(1,i-index_in)^3)*(1/6)+a0*(t(1,i-index_in)^2)*0.5+v0*t(1,i-index_in)+x0;
-    if a_out(1,i)>=amax
-        break;
+if j>0
+    while 1
+        a_out(1,i)=j*t(1,i-index_in)+a0;
+        v_out(1,i)=j*(t(1,i-index_in)^2)*0.5+a0*t(1,i-index_in)+v0;
+        x_out(1,i)=j*(t(1,i-index_in)^3)*(1/6)+a0*(t(1,i-index_in)^2)*0.5+v0*t(1,i-index_in)+x0;
+        if a_out(1,i)>=amax
+            break;
+        end
+        i=i+1;
     end
-    i=i+1;
+    index_out=i;
+elseif j<0
+    while 1
+        a_out(1,i)=j*t(1,i-index_in)+a0;
+        v_out(1,i)=j*(t(1,i-index_in)^2)*0.5+a0*t(1,i-index_in)+v0;
+        x_out(1,i)=j*(t(1,i-index_in)^3)*(1/6)+a0*(t(1,i-index_in)^2)*0.5+v0*t(1,i-index_in)+x0;
+        if a_out(1,i)<=amax
+            break;
+        end
+        i=i+1;
+    end
+    index_out=i;    
 end
-index_out=i;
 end
