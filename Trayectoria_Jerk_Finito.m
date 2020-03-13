@@ -132,10 +132,8 @@ end
 for i=71:length(xnuevo)
     ynuevo(i)=ynuevo(i)+2.5;
 end
-% ynuevo=spline(x,ynuevo,x);
 stairs(x,ynuevo,'b')
 
-% plot(x,ynuevo,'b')
 %% Generador de trayectoria
 columna_consigna=4; %Columna de consigna a elegir
 xc=5+2.5*columna_consigna;
@@ -178,14 +176,14 @@ v2_carro=v1_carro+jerk_carro*0.5*(t2_carro^2)+a0_carro*t2_carro;
 p2_carro=p1_carro+v1_carro*t2_carro+a0_carro*0.5*(t2_carro^2)+jerk_carro*(1/6)*(t2_carro^3);
 
 % Perfil de posicion, velocidad y aceleracion del carro hasta el obstáculo máximo. 
-t=0:0.1:15;
-x=linspace(0,0,151);
-v=linspace(0,0,151);
-a=linspace(0,0,151);
+t=0:0.1:30;
+x=linspace(0,0,301);
+v=linspace(0,0,301);
+a=linspace(0,0,301);
 index=0;
 jerk_accel_carro=1;
 jerk_daccel_carro=-1;
-[x,v,a,index]=jerk_constante(x,v,a,xo,0,0,jerk_accel_carro,x_max,vel_max_carro,a_max_carro,t,index);
+[x,v,a,index]=jerk_constante(x,v,a,xo+l_cont/2,0,0,jerk_accel_carro,x_max,vel_max_carro,a_max_carro,t,index);
 [delta_v,delta_x,delta_t]=delta_velocidad(a(index),0,jerk_daccel_carro,1,0);
 [x,v,a,index]=aceleracion_constante(x,v,a,x(index),v(index),a(index),0,x_max,vel_max_carro-delta_v,a_max_carro,t,index-1);
 [x,v,a,index]=jerk_constante(x,v,a,x(index),v(index),a(index),jerk_daccel_carro,x_max,vel_max_carro,0,t,index-1);
@@ -193,14 +191,6 @@ jerk_daccel_carro=-1;
 % --->Contemplar caso en el que x excede el objetivo final
 index_xmax=find(x>=x_max);
 tiempo_total_x=t(index_xmax(1));
-
-figure(3)
-plot(t(1:index),x(1:index),'-r')
-figure(4)
-plot(t(1:index),v(1:index),'-b')
-figure(5)
-plot(t(1:index),a(1:index),'-g')
-
 
 %% Aceleracion Izaje a velocidad máxima
 v0_izaje=0.1; %Depende de la velocidad manual final del operador
@@ -248,10 +238,10 @@ y2_dacc_izaje=(1/6)*jerk_izaje*(t2_dacc_izaje^3)+a_dacc_izaje*0.5*(t2_dacc_izaje
 disp(v2_dacc_izaje);
 
 %% Perfil de posicion, velocidad y aceleracion de izaje hasta el obstáculo máximo. 
-
-y=linspace(0,0,151);
-vy=linspace(0,0,151);
-ay=linspace(0,0,151);
+ty=0:0.1:30;
+y=linspace(0,0,301);
+vy=linspace(0,0,301);
+ay=linspace(0,0,301);
 index=0;
 
 v0_izaje=0.1; %Depende de la velocidad manual final del operador
@@ -261,26 +251,71 @@ jerk_accel_izaje=1;
 jerk_daccel_izaje=-1;
 
 % Aceleracion hasta velocidad maxima 
-[y,vy,ay,index]=jerk_constante(y,vy,ay,y0_izaje,v0_izaje,0,jerk_accel_izaje,h_max,vel_max_izaje,a_max_izaje,t,index);
+[y,vy,ay,index]=jerk_constante(y,vy,ay,y0_izaje,v0_izaje,0,jerk_accel_izaje,h_max,vel_max_izaje,a_max_izaje,ty,index);
 [delta_v,delta_y,delta_t]=delta_velocidad(ay(index),0,jerk_daccel_izaje,1,0);
-[y,vy,ay,index]=aceleracion_constante(y,vy,ay,y(index),vy(index),ay(index),0,h_max,vel_max_izaje-delta_v,a_max_izaje,t,index-1);
-[y,vy,ay,index]=jerk_constante(y,vy,ay,y(index),vy(index),ay(index),jerk_daccel_izaje,h_max,vel_max_izaje,0,t,index-1);
-
+[y,vy,ay,index]=aceleracion_constante(y,vy,ay,y(index),vy(index),ay(index),0,h_max,vel_max_izaje-delta_v,a_max_izaje,ty,index-1);
+[y,vy,ay,index]=jerk_constante(y,vy,ay,y(index),vy(index),ay(index),jerk_daccel_izaje,h_max,vel_max_izaje,0,ty,index-1);
+t0=ty(index);
+y0=y(index);
 %Calculo de deltas para la desaceleracion desde velocidad maxima
 [delta_v,delta_y,delta_t]=deaccel_izaje(vel_max_izaje,a_max_izaje,jerk_accel_izaje,jerk_daccel_izaje);
-
 t_disp=tiempo_total_x-t(index)-delta_t;
+[deltav,delta_y_velmax,delta_t]=delta_posicion(vel_max_izaje,t_disp);
+y_disp=h_max-y(index)-delta_y-delta_y_velmax;
+%condicion donde y_disp<0
 
-y_disp=h_max-y(index)-delta_y;
-% 
-% x_velmax=8;
-% distx_total=x_max-xo-1.25;
-% dif_x=distx_total-x_velmax;
-% temp_total=4+dif_x/vel_max_carro;
-% aux_y=temp_total*vel_max_izaje;
-% subir_y=h_max-aux_y;
-% temp_y=sqrt(2*subir_y/1);
-% temp_total=temp_total+temp_y;
+if y_disp>0
+    disp('Entre')
+    % Calculo de deltas de velocidad, posicion y tiempo para el caso de una
+    % desaceleracion
+    [delta_v,delta_y,delta_t]=deaccel_izaje(vel_max_izaje,a_max_izaje,jerk_accel_izaje,jerk_daccel_izaje);    
+    disp('delta y')
+    delta_y
+    t1=delta_t;
+    t_disp=tiempo_total_x-delta_t;
+    [deltav,delta_y_velmax,delta_t]=delta_posicion(vel_max_izaje,t_disp);
+    t2=delta_t;
+    y_disp=h_max-y(index)-delta_y-delta_y_velmax;
+    disp('y(index)')
+    y(index)
+    % Tramo a velocidad constante con carro quieto
+    [y,vy,ay,index]=velocidad_constante(y,vy,ay,y(index),vy(index),ay(index),0,y(index)+y_disp,vel_max_izaje,0,ty,index-1);
+    index_x_inicio=index;
+    t3=ty(index)-t0;
+    y3=y(index)-y0;
+    % Tramo a velocidad constante con carro en movimiento
+    [y,vy,ay,index]=velocidad_constante(y,vy,ay,y(index),vy(index),ay(index),0,y(index)+delta_y_velmax,vel_max_izaje,0,ty,index-1);
+    t2_ver=ty(index)-t3;
+    y2_ver=y(index)-(y3+y0);
+    % Tramo de desaceleracion a velocidad de izaje 0
+    [y,vy,ay,index]=jerk_constante(y,vy,ay,y(index),vy(index),ay(index),jerk_daccel_izaje,h_max,vel_max_izaje,-a_max_izaje,ty,index-1);
+    [delta_v,delta_y,delta_t]=delta_velocidad(ay(index),0,jerk_accel_izaje,1,0);
+    [y,vy,ay,index]=aceleracion_constante(y,vy,ay,y(index),vy(index),ay(index),0,h_max,0-delta_v,-a_max_izaje,ty,index-1);
+    [y,vy,ay,index]=jerk_constante(y,vy,ay,y(index),vy(index),ay(index),jerk_accel_izaje,h_max,vel_max_izaje,0,ty,index-1);
+    t1_ver=ty(index)-t2_ver;
+    y1_ver=y(index)-(y2_ver+y3+y0);
+end
+
+index_hmax=find(y>=h_max);
+
+xaux=x(1:index_xmax);
+vaux=v(1:index_xmax);
+aaux=a(1:index_xmax);
+x(1:index_x_inicio)=xaux(1);
+v(1:index_x_inicio)=0;
+a(1:index_x_inicio)=0;
+
+if index_x_inicio+index_xmax>index_hmax
+x((index_x_inicio):index_hmax)=xaux;
+v((index_x_inicio):index_hmax)=vaux;
+a((index_x_inicio):index_hmax)=aaux;
+else
+x((index_x_inicio+1):index_hmax)=xaux;
+v((index_x_inicio+1):index_hmax)=vaux;
+a((index_x_inicio+1):index_hmax)=aaux;    
+end
+
+plot(x(1:index_hmax),y(1:index_hmax),'-b')
 
 % plot(x_recta,y_recta,'g');
 % plot(x_t,y_t,'r')

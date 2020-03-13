@@ -17,5 +17,9 @@ while 1
 end
 index_out=i;
 
+if x_out(1,index_out)~=xmax
+    index_out=index_out-1;
+    x_out(1,index_out)=xmax;
+end
 
 end

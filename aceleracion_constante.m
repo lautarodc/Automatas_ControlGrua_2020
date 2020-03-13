@@ -5,16 +5,33 @@ i=index_in+1;
 x_out=x_in;
 v_out=v_in;
 a_out=a_in;
-
-while 1
-    a_out(1,i)=a0;
-    v_out(1,i)=a0*t(1,i-index_in)+v0;
-    x_out(1,i)=a0*(t(1,i-index_in)^2)*0.5+v0*t(1,i-index_in)+x0;
-    if v_out(1,i)>=vmax
-        break;
+if a0>0
+    while 1
+        a_out(1,i)=a0;
+        v_out(1,i)=a0*t(1,i-index_in)+v0;
+        x_out(1,i)=a0*(t(1,i-index_in)^2)*0.5+v0*t(1,i-index_in)+x0;
+        if v_out(1,i)>=vmax
+            break;
+        end
+        i=i+1;
     end
-    i=i+1;
+elseif a0<0
+    while 1
+        a_out(1,i)=a0;
+        v_out(1,i)=a0*t(1,i-index_in)+v0;
+        x_out(1,i)=a0*(t(1,i-index_in)^2)*0.5+v0*t(1,i-index_in)+x0;
+        if v_out(1,i)<=vmax
+            break;
+        end
+        i=i+1;
+    end
+    
 end
 index_out=i;
+
+if v_out(1,index_out)~=vmax
+    index_out=index_out-1;
+    v_out(1,index_out)=vmax;
+end
 
 end

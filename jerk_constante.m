@@ -27,6 +27,10 @@ elseif j<0
         end
         i=i+1;
     end
-    index_out=i;    
+    index_out=i;
+end
+if a_out(1,index_out)~=amax
+    index_out=index_out-1;
+    a_out(1,index_out)=amax;
 end
 end
