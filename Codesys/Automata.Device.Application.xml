@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Symbolconfiguration xmlns="http://www.3s-software.com/schemas/Symbolconfiguration.xsd">
+  <Header>
+    <Version>3.5.14.0</Version>
+    <SymbolConfigObject version="3.5.15.30" runtimeid="3.5.15.30" libversion="3.5.15.20" compiler="3.5.15.30" lmm="3.5.15.0" profile="CODESYS V3.5 SP15 Patch 3+" settings="LayoutCalculator=OptimizedClientSideLayoutCalculator" />
+    <ProjectInfo name="Automata" devicename="Device" appname="Application" />
+  </Header>
+  <TypeList>
+    <TypeSimple name="T_LREAL" size="8" swapsize="8" typeclass="LReal" iecname="LREAL" />
+  </TypeList>
+  <NodeList>
+    <Node name="Application">
+      <Node name="SFC_NIVEL_2">
+        <Node name="dAngc" type="T_LREAL" access="ReadWrite" />
+        <Node name="dAngm" type="T_LREAL" access="ReadWrite" />
+        <Node name="dCarc" type="T_LREAL" access="ReadWrite" />
+        <Node name="dCarm" type="T_LREAL" access="ReadWrite" />
+        <Node name="dIzc" type="T_LREAL" access="ReadWrite" />
+        <Node name="dIzm" type="T_LREAL" access="ReadWrite" />
+        <Node name="lh" type="T_LREAL" access="ReadWrite" />
+        <Node name="Masa_Cont" type="T_LREAL" access="ReadWrite" />
+        <Node name="UpidCar" type="T_LREAL" access="ReadWrite" />
+        <Node name="UpidIz" type="T_LREAL" access="ReadWrite" />
+      </Node>
+    </Node>
+  </NodeList>
+</Symbolconfiguration>
