@@ -15,12 +15,12 @@
         <Node name="dAngm" type="T_LREAL" access="ReadWrite" />
         <Node name="dCarc" type="T_LREAL" access="ReadWrite" />
         <Node name="dCarm" type="T_LREAL" access="ReadWrite" />
-        <Node name="dIzc" type="T_LREAL" access="ReadWrite" />
-        <Node name="dIzm" type="T_LREAL" access="ReadWrite" />
         <Node name="lh" type="T_LREAL" access="ReadWrite" />
         <Node name="Masa_Cont" type="T_LREAL" access="ReadWrite" />
+        <Node name="Uk" type="T_LREAL" access="ReadWrite" />
         <Node name="UpidCar" type="T_LREAL" access="ReadWrite" />
-        <Node name="UpidIz" type="T_LREAL" access="ReadWrite" />
+        <Node name="VelIzc" type="T_LREAL" access="ReadWrite" />
+        <Node name="VelIzm" type="T_LREAL" access="ReadWrite" />
       </Node>
     </Node>
   </NodeList>
