@@ -10,16 +10,22 @@ while 1
     a_out(1,i)=0;
     v_out(1,i)=v0;
     x_out(1,i)=v0*t(1,i-index_in)+x0;
-    if x_out(1,i)>=xmax
-        break;
+    if xmax>x0
+        if x_out(1,i)>=xmax
+            break;
+        end
+    elseif xmax<x0
+        if x_out(1,i)<=xmax
+            break;
+        end
     end
     i=i+1;
 end
 index_out=i;
 
-if x_out(1,index_out)~=xmax
-    index_out=index_out-1;
-    x_out(1,index_out)=xmax;
-end
+% if x_out(1,index_out)~=xmax
+%     index_out=index_out-1;
+%     x_out(1,index_out)=xmax;
+% end
 
 end
