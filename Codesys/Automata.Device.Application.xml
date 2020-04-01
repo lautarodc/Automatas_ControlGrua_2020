@@ -17,6 +17,8 @@
         <Node name="dCarm" type="T_LREAL" access="ReadWrite" />
         <Node name="lh" type="T_LREAL" access="ReadWrite" />
         <Node name="Masa_Cont" type="T_LREAL" access="ReadWrite" />
+        <Node name="PosIzc" type="T_LREAL" access="ReadWrite" />
+        <Node name="PosIzm" type="T_LREAL" access="ReadWrite" />
         <Node name="Uk" type="T_LREAL" access="ReadWrite" />
         <Node name="UpidCar" type="T_LREAL" access="ReadWrite" />
         <Node name="VelIzc" type="T_LREAL" access="ReadWrite" />
