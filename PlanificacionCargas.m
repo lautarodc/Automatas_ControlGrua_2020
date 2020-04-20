@@ -1,7 +1,8 @@
-figure
-hold on
 clc;
 clear all;
+close all;
+figure
+hold on
 %% Parametros límite contenedores y escenario
 l_cont=2.5;
 lim_xi=-30+l_cont/2;
@@ -135,20 +136,23 @@ end
 stairs(x,ynuevo,'b')
 
 %% Generador de trayectoria
-columna_consigna=1; %Columna de consigna a elegir
+columna_consigna=4; %Columna de consigna a elegir
 xc=5+2.5*columna_consigna;
-index_columna=((30+xc)/0.5)+1;
-index_contenedor=((30+xo)/0.5)+1;
-h_max=max(ynuevo(index_contenedor:(index_columna-1)));
+xc=xc-1.25;
 
-yc=ynuevo(index_columna-1);
-i=1;
-while(ynuevo(i)~=h_max)
-    i=i+1;
-end
-x_max=x(i)+1.25;
-h_max=h_max+2.5;
-yc=yc+2.5;
+% index_columna=round(((30+xc)/0.5)+1);
+% index_contenedor=round(((30+xo)/0.5)+1);
+% h_max=max(ynuevo(index_contenedor:(index_columna-1)));
+% yc=ynuevo(index_columna-1);
+% 
+% i=1;
+% while(ynuevo(i)~=h_max)
+%     i=i+1;
+% end
+% x_max=x(i)+1.25;
+% 
+% h_max=h_max+2.5;
+% yc=yc+2.5;
 
 %Parametros cinematicos de diseño
 vel_max_izaje=2;
@@ -166,30 +170,30 @@ vy0=0.1;
 
 % Verificacion de distancia de x_max a x objetivo para calculo de la
 % velocidad maxima de x
-xc=xc-1.25;
-x_disp=xc-(xo+l_cont/2);
+% x_disp=xc-(xo+l_cont/2);
+% 
+% j1=jerk_daccel_carro;
+% [delta_v1,delta_x1,delta_t1]=delta_velocidad(0,-a_max_carro,j1,1,0);
+% j3=jerk_accel_carro;
+% [delta_v3,delta_x3,delta_t3]=delta_velocidad(-a_max_carro,0,j3,1,0);
+% [delta_v3,delta_x3,delta_t3]=delta_velocidad(-a_max_carro,0,j3,2,(0-delta_v3));
+% a=2*(-1/(2*-a_max_carro));
+% b=2*(delta_t1-(2*delta_v1)/(2*-a_max_carro));
+% c=-x_disp+2*((1/6)*j1*(delta_t1^3)+(1/(2*-a_max_carro))*(delta_v3^2-delta_v1^2)+delta_x3);
+% coef=[a b c];
+% r=roots(coef);
+% if r(2)>=vel_max_carro
+% 
+% else
+%     vel_max_carro=r(2);
+% end
 
-j1=jerk_daccel_carro;
-[delta_v1,delta_x1,delta_t1]=delta_velocidad(0,-a_max_carro,j1,1,0);
-j3=jerk_accel_carro;
-[delta_v3,delta_x3,delta_t3]=delta_velocidad(-a_max_carro,0,j3,1,0);
-[delta_v3,delta_x3,delta_t3]=delta_velocidad(-a_max_carro,0,j3,2,(0-delta_v3));
-a=2*(-1/(2*-a_max_carro));
-b=2*(delta_t1-(2*delta_v1)/(2*-a_max_carro));
-c=-x_disp+2*((1/6)*j1*(delta_t1^3)+(1/(2*-a_max_carro))*(delta_v3^2-delta_v1^2)+delta_x3);
-coef=[a b c];
-r=roots(coef);
-if r(2)>=vel_max_carro
-
-else
-    vel_max_carro=r(2);
-end
 %Calculo del primer tramo de la trayectoria
-[x,v,a,y,vy,ay,t,index_hmax]=Generador_Trayectoria(1,xnuevo,ynuevo,xc,yc,xo+l_cont/2,y0,vy0,x_max,h_max,vel_max_carro,vel_max_izaje,a_max_carro,a_max_izaje,jerk_accel_carro,jerk_accel_izaje,jerk_daccel_carro,jerk_daccel_izaje);
+% [x,v,a,y,vy,ay,t,index_hmax]=Generador_Trayectoria(1,xnuevo,ynuevo,xc,yc,xo+l_cont/2,y0,vy0,x_max,h_max,vel_max_carro,vel_max_izaje,a_max_carro,a_max_izaje,jerk_accel_carro,jerk_accel_izaje,jerk_daccel_carro,jerk_daccel_izaje);
 
+[x,v,a,y,vy,ay,t,index_hmax]=PathPlanning(1,xnuevo,ynuevo,xc,xo+l_cont/2,y0,0,vy0,vel_max_carro,vel_max_izaje,a_max_carro,a_max_izaje,jerk_accel_carro,jerk_accel_izaje,jerk_daccel_carro,jerk_daccel_izaje);
 
 plot(x(1:index_hmax),y(1:index_hmax),'-b')
-
 figure(3)
 plot(t(1:index_hmax),y(1:index_hmax),'-g')
 figure(4)
