@@ -31,7 +31,7 @@ index_out=i;
 
 if v_out(1,index_out)~=vmax
     index_out=index_out-1;
-    v_out(1,index_out)=vmax;
+    v_out(1,index_out)=real(vmax);
 end
 
 end

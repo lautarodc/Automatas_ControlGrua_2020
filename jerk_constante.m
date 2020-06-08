@@ -1,7 +1,9 @@
 function [x_out,v_out,a_out,index_out]=jerk_constante(x_in,v_in,a_in,x0,v0,a0,j,xmax,vmax,amax,t,index_in)
 %amax puede ser tanto positiva como negativa
-i=index_in+1;
+% index_out=0;
+index_out=0;
 
+i=index_in+1;
 x_out=x_in;
 v_out=v_in;
 a_out=a_in;

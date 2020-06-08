@@ -1,13 +1,27 @@
 function indice_ok=DespejeColision(h_max,xnuevo,ynuevo,xc_indice,yc_indice,indice_ant,indice_sig,indice)
 % Calculo del tramo lineal entre el punto indicado por el indice y el
 % objetivo
-y_tramo=ynuevo(indice:yc_indice);
+% y_despeje=0;
+% indice_ok=0;
+if yc_indice>=indice
+    y_tramo=ynuevo(indice:yc_indice);
+else
+    y_tramo=ynuevo(yc_indice:indice);
+end
 m=(ynuevo(yc_indice)-ynuevo(indice))/(xnuevo(xc_indice)-xnuevo(indice));
 b=h_max;
 a=xnuevo(indice);
-for i=indice:xc_indice
-    y_despeje(i+1-indice)=m*(xnuevo(i)-a)+b;
+
+if xc_indice>=indice
+    for i=indice:xc_indice
+        y_despeje(i+1-indice)=m*(xnuevo(i)-a)+b;
+    end
+else
+    for i=xc_indice:indice
+        y_despeje(i+1-xc_indice)=m*(xnuevo(i)-a)+b;
+    end    
 end
+
 % Verificacion de colisiones
 y_aux=y_despeje-y_tramo;
 colisiones=find(y_aux<0);
@@ -36,16 +50,16 @@ if xnuevo(xc_indice)>xnuevo(indice)
     end
 elseif xnuevo(xc_indice)<xnuevo(indice)
     if colision
-        indice_aux=round((indice_ant+indice)/2);
-        indice_sig=indice;
+        indice_aux=round((indice_sig+indice)/2);
         indice=indice_aux;
+        indice_ant=indice;
         indice_ok=DespejeColision(h_max,xnuevo,ynuevo,xc_indice,yc_indice,indice_ant,indice_sig,indice);
     else
-        indice_aux=round((indice_sig+indice)/2);
+        indice_aux=round((indice_ant+indice)/2);
         if indice_aux==indice
             indice_ok=indice;
         else
-            indice_ant=indice;
+            indice_sig=indice;
             indice=indice_aux;
             indice_ok=DespejeColision(h_max,xnuevo,ynuevo,xc_indice,yc_indice,indice_ant,indice_sig,indice);
         end

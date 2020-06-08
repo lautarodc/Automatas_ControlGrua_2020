@@ -27,7 +27,7 @@ ml_min=17000;
 %% Variables estructurales
 Y_t0=45;
 g=9.81;     %m/s^2
-kcy=1.3e11; %N/m
+kcy=1.3e9; %N/m
 bcy=500e3;  %N/m/s
 bcx=1000e3; %N/m/s
 %% Configuracion
@@ -42,3 +42,5 @@ Y_max=40;
 Y_sb=15;
 AlturaInicialMuelle=2.5;
 AlturaInicialBarco=2.5;
+
+%% Trayectoria
